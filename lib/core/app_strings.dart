@@ -1,6 +1,8 @@
 
 
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class AppStrings {
   static const String appName = 'AI Chat Bot';
   static const String inputHint = 'Type a message...';
@@ -14,17 +16,16 @@ class AppStrings {
   static const String errorGeneral = 'Something went wrong. Please try again.';
 
   // Chat API
-  static const String apiKey = "Your text api key";
+  static  String apiKey = dotenv.env['API_KEY'] ?? '';
 
 
-  static const String model = 'google/gemini-3.1-flash-lite';
+  static const String model = 'nvidia/nemotron-3-super-120b-a12b:free';
   static const String systemPrompt =
       'You are a helpful and friendly AI assistant.';
 
   // Image Generation API
-  static const String imageGenApiKey =
-      'Your img api key';
+  static  String get imageGenApiKey =>dotenv.env['API_KEY'] ?? '';
   static const String imageGenBaseUrl = 'https://openrouter.ai/api/v1';
 
-  static const String imageGenModel = 'black-forest-labs/flux.2-pro';
+  static const String imageGenModel = 'sourceful/riverflow-v2-standard-preview';
 }
