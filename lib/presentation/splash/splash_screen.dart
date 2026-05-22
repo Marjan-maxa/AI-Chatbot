@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:llm_chatbot/presentation/screens/main_nav_bar.dart';
 
 
 import '../screens/chat_screen.dart';
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  ChatScreen()),
+        MaterialPageRoute(builder: (context) =>  MainNavBar()),
       );
     });
   }

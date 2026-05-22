@@ -14,7 +14,7 @@ class AppStrings {
   static const String errorGeneral = 'Something went wrong. Please try again.';
 
   // Chat API
-  static const String apiKey = "Your Api Key";
+  static const String apiKey = "Your text api key";
 
 
   static const String model = 'google/gemini-3.1-flash-lite';
@@ -23,7 +23,8 @@ class AppStrings {
 
   // Image Generation API
   static const String imageGenApiKey =
-      'img key';
+      'Your img api key';
   static const String imageGenBaseUrl = 'https://openrouter.ai/api/v1';
-  static const String imageGenModel = 'google/gemini-2.5-flash-image';
+
+  static const String imageGenModel = 'black-forest-labs/flux.2-pro';
 }

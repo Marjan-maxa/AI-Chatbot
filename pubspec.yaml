@@ -45,6 +45,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
+  curved_navigation_bar: ^1.0.6
 
 flutter_launcher_icons:
   android: true
