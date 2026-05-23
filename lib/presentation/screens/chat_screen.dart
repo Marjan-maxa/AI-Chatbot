@@ -9,7 +9,6 @@ import '../widgets/message_bubble.dart';
 import '../widgets/typing indicator.dart';
 
 class ChatScreen extends StatefulWidget {
-
   const ChatScreen({super.key});
 
   @override
@@ -23,11 +22,12 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       provider = context.read<ChatProvider>();
+      provider = context.read<ChatProvider>();
 
       provider.addListener(_scrollToBottom);
     });
   }
+
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
@@ -68,7 +68,11 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 5,
         title: Row(
           children: [
-           Icon(Icons.smart_toy_outlined,size: 30,color: Colors.white.withOpacity(0.8),),
+            Icon(
+              Icons.smart_toy_outlined,
+              size: 30,
+              color: Colors.white.withOpacity(0.8),
+            ),
             const SizedBox(width: 10),
             Text(
               AppStrings.appName,
@@ -83,24 +87,31 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Consumer<ChatProvider>(
         builder: (context, chatProvider, child) {
-
           return Column(
             children: [
               Expanded(
-                child:chatProvider.messages.isEmpty && !chatProvider.isLoading? EmptyChat(): ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
-                  controller: _scrollController,
-                  itemCount: chatProvider.messages.length + (chatProvider.isLoading ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index < chatProvider.messages.length) {
-                      return MessageBubble(message: chatProvider.messages[index]);
-                    } else {
-                      return const TypingIndicator();
-                    }
-                  },
-                ),
+                child: chatProvider.messages.isEmpty && !chatProvider.isLoading
+                    ? EmptyChat()
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        controller: _scrollController,
+                        itemCount:
+                            chatProvider.messages.length +
+                            (chatProvider.isLoading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index < chatProvider.messages.length) {
+                            return MessageBubble(
+                              message: chatProvider.messages[index],
+                            );
+                          } else {
+                            return RepaintBoundary(
+                              child: const TypingIndicator(),
+                            );
+                          }
+                        },
+                      ),
               ),
               if (chatProvider.errorMessage != null)
                 Padding(
@@ -123,12 +134,12 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
     provider.removeListener(_scrollToBottom);
-
   }
 }

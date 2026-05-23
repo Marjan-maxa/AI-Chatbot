@@ -8,7 +8,6 @@ import '../widgets/empty_img_gen.dart';
 import '../widgets/image_bubble.dart';
 import '../widgets/typing indicator.dart';
 
-
 class ImgGenScreen extends StatefulWidget {
   const ImgGenScreen({super.key});
 
@@ -93,14 +92,18 @@ class _ImgGenScreenState extends State<ImgGenScreen> {
                     ? const EmptyImageGen()
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: imgProvider.messages.length +
+                        itemCount:
+                            imgProvider.messages.length +
                             (imgProvider.isLoading ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index < imgProvider.messages.length) {
                             return ImageBubble(
-                                message: imgProvider.messages[index]);
+                              message: imgProvider.messages[index],
+                            );
                           } else {
-                            return const TypingIndicator();
+                            return RepaintBoundary(
+                              child: const TypingIndicator(),
+                            );
                           }
                         },
                       ),
