@@ -8,6 +8,7 @@ import '../widgets/empty_img_gen.dart';
 import '../widgets/image_bubble.dart';
 import '../widgets/typing indicator.dart';
 
+
 class ImgGenScreen extends StatefulWidget {
   const ImgGenScreen({super.key});
 
@@ -16,18 +17,17 @@ class ImgGenScreen extends StatefulWidget {
 }
 
 class _ImgGenScreenState extends State<ImgGenScreen> {
+  late ImgProvider provider;
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = context.read<ImgProvider>();
-      provider.addListener(() {
-        _scrollToBottom();
-      });
+      provider = context.read<ImgProvider>();
+      provider.addListener(_scrollToBottom);
     });
   }
-  final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -127,13 +127,11 @@ class _ImgGenScreenState extends State<ImgGenScreen> {
       ),
     );
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+    provider.removeListener(_scrollToBottom);
     _scrollController.dispose();
-    context.read<ImgProvider>().removeListener(() {
-      _scrollToBottom();
-    });
+    super.dispose();
   }
 }

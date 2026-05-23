@@ -9,6 +9,7 @@ import '../widgets/message_bubble.dart';
 import '../widgets/typing indicator.dart';
 
 class ChatScreen extends StatefulWidget {
+
   const ChatScreen({super.key});
 
   @override
@@ -16,17 +17,15 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
+  late ChatProvider provider;
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = context.read<ChatProvider>();
+       provider = context.read<ChatProvider>();
 
-      provider.addListener(() {
-        _scrollToBottom();
-      });
+      provider.addListener(_scrollToBottom);
     });
   }
   final ScrollController _scrollController = ScrollController();
@@ -129,8 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
-    context.read<ChatProvider>().removeListener(() {
-      _scrollToBottom();
-    });
+    provider.removeListener(_scrollToBottom);
+
   }
 }
