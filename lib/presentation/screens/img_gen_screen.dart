@@ -16,6 +16,17 @@ class ImgGenScreen extends StatefulWidget {
 }
 
 class _ImgGenScreenState extends State<ImgGenScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<ImgProvider>();
+      provider.addListener(() {
+        _scrollToBottom();
+      });
+    });
+  }
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
@@ -75,9 +86,6 @@ class _ImgGenScreenState extends State<ImgGenScreen> {
       ),
       body: Consumer<ImgProvider>(
         builder: (context, imgProvider, child) {
-          // Auto scroll to bottom when messages change or typing starts
-          _scrollToBottom();
-
           return Column(
             children: [
               Expanded(
@@ -118,5 +126,14 @@ class _ImgGenScreenState extends State<ImgGenScreen> {
         },
       ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
+    context.read<ImgProvider>().removeListener(() {
+      _scrollToBottom();
+    });
   }
 }

@@ -16,6 +16,19 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<ChatProvider>();
+
+      provider.addListener(() {
+        _scrollToBottom();
+      });
+    });
+  }
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
@@ -71,13 +84,14 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Consumer<ChatProvider>(
         builder: (context, chatProvider, child) {
-          // Auto scroll to bottom when messages change or typing starts
-          _scrollToBottom();
 
           return Column(
             children: [
               Expanded(
                 child:chatProvider.messages.isEmpty && !chatProvider.isLoading? EmptyChat(): ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior:
+                  ScrollViewKeyboardDismissBehavior.onDrag,
                   controller: _scrollController,
                   itemCount: chatProvider.messages.length + (chatProvider.isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
@@ -109,5 +123,14 @@ class _ChatScreenState extends State<ChatScreen> {
         },
       ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
+    context.read<ChatProvider>().removeListener(() {
+      _scrollToBottom();
+    });
   }
 }
